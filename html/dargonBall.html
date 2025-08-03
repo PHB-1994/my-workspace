@@ -44,7 +44,7 @@
       }
 
       .image {
-        width: 100px;
+        width: 150px;
         height: 420px;
         padding: 20;
         margin-left: 10px;
@@ -82,13 +82,18 @@
         border-radius: 5px;
         cursor: pointer;
       }
+
+      .db-detail-show {
+        width: 500px;
+        height: 1000px;
+      }
     </style>
   </head>
 
   <body>
     <img src="../image/dragonBall.png.webp" class="logo" />
     <h1>🐉드래곤볼 캐릭터 보기🐉</h1>
-    <button type="button" id="info" class="info">정보 불러오기</button>
+    <button type="button" id="btn" class="info">캐릭터 둘러보기</button>
     <div id="result"></div>
     <div class="btn">
       <button id="prevBtn" class="dbBtn">이전</button>
@@ -97,11 +102,10 @@
     </div>
     <script>
       let 현재페이지 = 1;
-
       $(function () {
+        // $("#btn").click(function () {
         dbInfo(1);
-        // dragonBall();
-        // $("#info").click(dragonBall);
+        // });
 
         $("#prevBtn").click(function () {
           if (현재페이지 > 1) {
@@ -117,30 +121,6 @@
           dbInfo(현재페이지);
         });
       });
-
-      //   function dragonBall() {
-      //     $.get("https://dragonball-api.com/api/characters").done(function (
-      //       data
-      //     ) {
-      //       console.log("data : ", data);
-      //       const dbCut = data.items.slice(0, 3);
-
-      //       $("#result").html(
-      //         dbCut.map(
-      //           (db) =>
-      //             `
-      //               <div class="container">
-      //                   <div class="imgInfo">
-      //                       <img src="${db.image}" alt="${db.name}" class="image" />
-      //                       <div class="user"><strong>이름 : ${db.name}</strong></div>
-      //                       <div class="user"><strong>종족 : ${db.race}</strong></div>
-      //                  </div>
-      //                </div>
-      //               `
-      //         )
-      //       );
-      //     });
-      //   }
 
       function range(start, end) {
         return [...Array(end - start + 1).keys()].map((i) => i + start);
@@ -162,7 +142,7 @@
                   `
                     <div class="container">
                         <div class="imgInfo">
-                            <img src="${data.image}" alt="${data.name}" class="image" />
+                            <img src="${data.image}" alt="${data.name}" class="image" onclick="showFullImage('${data.image}')"/>
                             <div class="user"><strong>이름 : ${data.name}</strong></div>
                             <div class="user"><strong>종족 : ${data.race}</strong></div>
                        </div>
@@ -172,6 +152,22 @@
             }
           );
         });
+      }
+
+      function showFullImage(imageUrl) {
+        $("#result")
+          .prepend(
+            `
+        <div id="images" class="fullImage" onclick="closeFullImage()">
+          <img src="${imageUrl}" class="db-detail-show"/>
+          </div>
+        `
+          )
+          .join();
+      }
+
+      function closeFullImage() {
+        $("#images").remove();
       }
     </script>
   </body>
